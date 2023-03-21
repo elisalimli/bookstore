@@ -1,6 +1,8 @@
 package utils
 
-import "github.com/go-playground/validator"
+import (
+	"github.com/go-playground/validator"
+)
 
 var validate = validator.New()
 
@@ -20,7 +22,7 @@ func ValidateStruct[T any](payload T) []*ErrorResponse {
 	if err != nil {
 		for _, err := range err.(validator.ValidationErrors) {
 			var element ErrorResponse
-			element.Field = err.ActualTag()
+			element.Field = err.Field()
 			element.Tag = err.Tag()
 			element.Message = customErrorMessages[element.Tag]
 
