@@ -60,9 +60,13 @@ func FilterUserRecord(user *User) UserResponse {
 var validate = validator.New()
 
 type ErrorResponse struct {
-	Field string `json:"field"`
-	Tag   string `json:"tag"`
-	Value string `json:"value,omitempty"`
+	Field   string `json:"field"`
+	Tag     string `json:"tag"`
+	Message string `json:"message"`
+}
+
+var customErrorMessages = map[string]string{
+	"required": "This field cannot be empty",
 }
 
 func ValidateStruct[T any](payload T) []*ErrorResponse {
@@ -71,9 +75,10 @@ func ValidateStruct[T any](payload T) []*ErrorResponse {
 	if err != nil {
 		for _, err := range err.(validator.ValidationErrors) {
 			var element ErrorResponse
-			element.Field = err.StructNamespace()
+			element.Field = err.ActualTag()
 			element.Tag = err.Tag()
-			element.Value = err.Param()
+			element.Message = customErrorMessages[element.Tag]
+
 			errors = append(errors, &element)
 		}
 	}

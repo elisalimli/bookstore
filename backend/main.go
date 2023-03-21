@@ -23,6 +23,7 @@ func main() {
 	app.Use(logger.New())
 
 	app.Post("/post", controllers.CreatePost)
+	app.Post("/signup", controllers.SignUpUser)
 
 	log.Fatal(app.Listen(":" + os.Getenv("PORT")))
 
