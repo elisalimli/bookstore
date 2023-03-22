@@ -1,4 +1,4 @@
-module github.com/alisalimli/bookstore/backend
+module github.com/elisalimli/bookstore/backend
 
 go 1.20
 
@@ -43,6 +43,7 @@ require (
 	github.com/goccy/go-json v0.10.0 // indirect
 	github.com/gofiber/fiber v1.14.6
 	github.com/gofiber/fiber/v2 v2.42.0
+	github.com/gofiber/jwt/v2 v2.2.7
 	github.com/gofiber/jwt/v3 v3.3.6
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/google/uuid v1.3.0

@@ -4,8 +4,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/alisalimli/bookstore/backend/initializers"
-	"github.com/alisalimli/bookstore/backend/models"
+	"github.com/elisalimli/bookstore/backend/initializers"
+	"github.com/elisalimli/bookstore/backend/models"
 )
 
 func init() {

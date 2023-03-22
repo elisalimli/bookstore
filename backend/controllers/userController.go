@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/alisalimli/bookstore/backend/initializers"
-	"github.com/alisalimli/bookstore/backend/models"
-	"github.com/alisalimli/bookstore/backend/utils"
+	"github.com/elisalimli/bookstore/backend/initializers"
+	"github.com/elisalimli/bookstore/backend/models"
+	"github.com/elisalimli/bookstore/backend/utils"
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
 	"golang.org/x/crypto/bcrypt"
@@ -61,7 +61,6 @@ func LoginUser(c *fiber.Ctx) error {
 	// validating input fields
 	if errors := utils.ValidateStruct(payload); errors != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"ok": false, "errors": errors})
-
 	}
 
 	var user models.User
@@ -78,7 +77,7 @@ func LoginUser(c *fiber.Ctx) error {
 
 	encodedRefreshToken, err := utils.CreateRefreshToken(c, user)
 	if err != nil {
-		return c.Status(fiber.StatusBadGateway).JSON(fiber.Map{"ok": false, "message": fmt.Sprintf("generating JWT Token failed: %v", err)})
+		return utils.JwtError(c, err)
 	}
 	// saving refresh token in cookie
 	utils.SendRefreshToken(c, encodedRefreshToken)
@@ -86,7 +85,7 @@ func LoginUser(c *fiber.Ctx) error {
 	encodedAccessToken, err := utils.CreateAccessToken(c, user)
 
 	if err != nil {
-		return c.Status(fiber.StatusBadGateway).JSON(fiber.Map{"ok": false, "message": fmt.Sprintf("generating JWT Token failed: %v", err)})
+		return utils.JwtError(c, err)
 	}
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"ok": true, "access_token": encodedAccessToken})
@@ -122,11 +121,11 @@ func RefreshToken(c *fiber.Ctx) error {
 
 	encodedAccessToken, err := utils.CreateAccessToken(c, user)
 	if err != nil {
-		return c.Status(fiber.StatusBadGateway).JSON(fiber.Map{"ok": false, "message": fmt.Sprintf("generating JWT Token failed: %v", err)})
+		return utils.JwtError(c, err)
 	}
 	encodedRefreshToken, err := utils.CreateRefreshToken(c, user)
 	if err != nil {
-		return c.Status(fiber.StatusBadGateway).JSON(fiber.Map{"ok": false, "message": fmt.Sprintf("generating JWT Token failed: %v", err)})
+		return utils.JwtError(c, err)
 	}
 	utils.SendRefreshToken(c, encodedRefreshToken)
 
