@@ -12,7 +12,7 @@ func CreateAccessToken(context *fiber.Ctx, user models.User) (string, error) {
 	claims := jwt.MapClaims{
 		"user_id":   user.ID,
 		"user_name": user.Name,
-		"exp":       time.Now().Add(time.Minute * 1).Unix(), // 30 min
+		"exp":       time.Now().Add(time.Minute * 30).Unix(), // 30 min
 	}
 
 	// Create token

@@ -8,6 +8,7 @@ import (
 	"github.com/elisalimli/bookstore/backend/controllers"
 	"github.com/elisalimli/bookstore/backend/initializers"
 	"github.com/elisalimli/bookstore/backend/middleware"
+	"github.com/elisalimli/bookstore/backend/models"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -19,11 +20,18 @@ func init() {
 	initializers.ConnectToDatabase()
 }
 func me(c *fiber.Ctx) error {
-	user := c.Locals("jwt").(*jwt.Token)
-	fmt.Println("user", user)
-	claims := user.Claims.(jwt.MapClaims)
-	name := claims["user_name"].(string)
-	return c.SendString("Welcome " + name)
+	token := c.Locals("jwt").(*jwt.Token)
+	// Extract the user ID from the token's claims
+	claims := token.Claims.(jwt.MapClaims)
+
+	userID := claims["user_id"].(string)
+	var user models.User
+
+	result := initializers.DB.First(&user, "id = ?", userID)
+
+	fmt.Println("User :", result)
+
+	return c.JSON(fiber.Map{"ok": true, "user": user})
 }
 
 func main() {

@@ -10,7 +10,7 @@ type User struct {
 	ID       *uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4();primary_key"`
 	Name     string     `gorm:"type:varchar(100);not null"`
 	Email    string     `gorm:"type:varchar(100);uniqueIndex;not null"`
-	Password string     `gorm:"type:varchar(100);not null"`
+	Password string     `gorm:"type:varchar(100);not null;" json:"-"`
 	// Role      *string    `gorm:"type:varchar(50);default:'user';not null"`
 	// Provider  *string    `gorm:"type:varchar(50);default:'local';not null"`
 	// Photo     *string    `gorm:"not null;default:'default.png'"`
